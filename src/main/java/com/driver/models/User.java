@@ -5,23 +5,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name="user")
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String username;
     private String password;
-    private String firstname;
-    private String lastname;
+    private String firstName = "test";
+    private String lastName = "test";
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    List<Blog> blogList = new ArrayList<>();
-
+    //Mapping
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Blog> blogList;
 
     public User() {
+
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(int id, String username, String password, String firstName, String lastName, List<Blog> blogList) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.blogList = blogList;
     }
 
     public int getId() {
@@ -48,20 +63,20 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public List<Blog> getBlogList() {

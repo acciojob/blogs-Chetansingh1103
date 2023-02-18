@@ -7,6 +7,8 @@ import com.driver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class BlogService {
     @Autowired
@@ -15,22 +17,19 @@ public class BlogService {
     @Autowired
     UserRepository userRepository1;
 
-    public Blog createAndReturnBlog(Integer userId, String title, String content) throws Exception {
+    public Blog createAndReturnBlog(Integer userId, String title, String content) {
         //create a blog at the current time
-
-        if(!userRepository1.findById(userId).isPresent()){
-            throw new Exception();
-        }
+//
+//        if(!userRepository1.findById(userId).isPresent()){
+//            throw new Exception();
+//        }
         User user = userRepository1.findById(userId).get();
-            Blog blog = new Blog();
-            blog.setTitle(title);
-            blog.setContent(content);
-            blog.setUser(user);
+        Blog blog = new Blog(user,title,content);
+        blog.setPubDate(new Date());
+        userRepository1.save(user); //Blog saved in repo by cascading
+        user.getBlogList().add(blog);
+        return blog;
 
-            user.getBlogList().add(blog);
-            userRepository1.save(user);
-
-            return blog;
     }
 
     public void deleteBlog(int blogId){
