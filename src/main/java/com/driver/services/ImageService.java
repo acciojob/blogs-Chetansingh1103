@@ -15,16 +15,19 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
-    public Image addImage(Integer blogId, String description, String dimensions){
+    public Image addImage(Integer blogId, String description, String dimensions)throws Exception{
         //add an image to the blog
+
+        if(!blogRepository2.findById(blogId).isPresent()) {
+            throw new Exception();
+        }
+            Blog blog = blogRepository2.findById(blogId).get();
             Image image = new Image();
             image.setDescription(description);
             image.setDimensions(dimensions);
-
-            Blog blog = blogRepository2.findById(blogId).get();
+            image.setBlog(blog);
 
             blog.getImageList().add(image);
-
             blogRepository2.save(blog);
 
             return image;
@@ -35,8 +38,11 @@ public class ImageService {
         imageRepository2.deleteById(id);
     }
 
-    public int countImagesInScreen(Integer id, String screenDimensions){
+    public int countImagesInScreen(Integer id, String screenDimensions) throws Exception{
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
+        if(!imageRepository2.findById(id).isPresent()){
+            throw new Exception();
+        }
         Image image = imageRepository2.findById(id).get();
 
         // getting the given image dimension

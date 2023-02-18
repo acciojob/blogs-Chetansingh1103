@@ -28,7 +28,7 @@ public class UserService {
         userRepository3.deleteById(userId);
     }
 
-    public User updateUser(Integer id, String password){
+    public User updateUser(Integer id, String password) {
         User user = userRepository3.findById(id).get();
 
         user.setPassword(password);
