@@ -15,9 +15,8 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
-    public Image addImage(Integer blogId, String description, String dimensions) throws Exception{
+    public Image addImage(Integer blogId, String description, String dimensions){
         //add an image to the blog
-        try {
             Image image = new Image();
             image.setDescription(description);
             image.setDimensions(dimensions);
@@ -29,24 +28,21 @@ public class ImageService {
             blogRepository2.save(blog);
 
             return image;
-        }
-        catch (Exception e){
-            throw new RuntimeException(e);
-        }
+
     }
 
     public void deleteImage(Integer id){
         imageRepository2.deleteById(id);
     }
 
-    public int countImagesInScreen(Integer id, String screenDimensions) throws Exception{
+    public int countImagesInScreen(Integer id, String screenDimensions){
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
         Image image = imageRepository2.findById(id).get();
 
         // getting the given image dimension
         String dimensions = image.getDimensions();
 
-        try {
+
             int a = Integer.parseInt(String.valueOf(dimensions.charAt(0)));
             int b = Integer.parseInt(String.valueOf(dimensions.charAt(2)));
 
@@ -60,10 +56,5 @@ public class ImageService {
 
             // returning number of total images which can fit inside the screen
             return z / c;
-        }
-        catch (Exception e){
-            throw new RuntimeException(e);
-        }
-
     }
 }
